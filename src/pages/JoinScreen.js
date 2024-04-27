@@ -1,7 +1,15 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { v4 as uuidv4 } from 'uuid';
 
 function JoinScreen() {
+    const navigate = useNavigate();
+    const JoinChat = () => {
+        const username = `User_${uuidv4().split('-')[0]}`
+        navigate(`/home`,{state: {username}})
+    }
+
     return (
         <Form className='form'>
             <H2>Join Chat</H2>
@@ -10,7 +18,7 @@ function JoinScreen() {
                 <Input type='text' id="username" />
             </FormInput>
             <FormInput className='form-input'>
-                <Button id="join-user">Join</Button>
+                <Button id="join-user" onClick={JoinChat}>Join</Button>
             </FormInput>
         </Form>
     );

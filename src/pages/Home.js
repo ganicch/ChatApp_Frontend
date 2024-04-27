@@ -2,25 +2,32 @@ import React, { useEffect, useState, useRef } from 'react';
 import profilePic from '../images/user_image.png';
 import styled, { keyframes } from 'styled-components';
 import io from 'socket.io-client';
-import DataAcess from '../apis/DataAcess';
-
+import { useLocation } from 'react-router-dom';
 function Home() {
 
   const [messages, setMessages] = useState([]);
+  const [users, setUsers] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
   const messagesEndRef = useRef(null);
   const socket = io("http://localhost:3001/");
+  const {state} = useLocation()
+
+  
 
   useEffect(() => {
-    
 
+    socket.emit('user', state.username);
+    
+    socket.on('users',  (user) => {
+      setUsers((prevUsers) => prevUsers.concat(user));
+    });
     socket.on('allMessages', (message) => {
       setMessages((prevMessages) => prevMessages.concat(message));
     });
     socket.on('message', (message) => {
       setMessages((prevMessages) => [...prevMessages, message]);
     });
-
+  
     scrollToBottom();
   }, []);
 
@@ -33,39 +40,44 @@ function Home() {
   };
 
   const sendMessage = () => {
+    console.log(users)
     if (inputMessage.trim() !== '') {
       socket.emit('message', inputMessage);
       setInputMessage('');
     }
   };
 
+  const exitChat = () => {
+    socket.disconnect()  
+  };
+
   return (
     <Main className='main-screen'>
       <Users className='online-users'>
         <Header className='header' style={{color:"white"}}>Users</Header>
-        <User className='user'>
-          <Image src={profilePic} alt="User"></Image>
-          <H4>Mirza</H4>
-        </User>
-        <User className='user'>
-          <Image src={profilePic} alt="User"></Image>
-          <H4>Mirza</H4>
-        </User>
-        <User className='user'>
-          <Image src={profilePic} alt="User"></Image>
-          <H4>Mirza</H4>
-        </User>
+        
+        {
+          users.map((user,key) => {
+            return (
+              <User className='user'>
+                <Image src={profilePic} alt="User"></Image>
+                <H4>{user}</H4>
+              </User>
+            )
+          })
+        }
+        
       </Users>
       <ChatScreen className='screen chat-screen'>
         <Header className='header'>
           <Logo>Chat</Logo>
-          <Button id="exit-chat">Exit</Button>
+          <Button id="exit-chat" onClick={exitChat}>Exit</Button>
         </Header>
         <MessagesContainer className='messages'>
           {messages.map((mess, key) => {
             return (
               <Message className='message my-message' key={key}>
-                <MessageTexts className='name'>You</MessageTexts>
+                <MessageTexts className='name'>User</MessageTexts>
                 <MessageTexts className='text'>{mess}</MessageTexts>
               </Message>
             )
