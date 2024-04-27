@@ -1,13 +1,67 @@
-body {
+* {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
+  box-sizing: border-box;
+}
+.appall{
+  font-family: "Roboto",sans-serif;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.app {
+  position:fixed;
+  width: 100%;
+  height: 100%;
+  max-width: 600px;
+  background: #fff;
+  border-left: 1px solid #eee;
+  border-right: 1px solid #eee;
 }
+
+.screen .form {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  width: 80%;
+  max-width: 400px;
+}
+
+.screen .form-input {
+  width: 100%;
+  margin: 20px 0px;
+}
+
+.screen h2 {
+  margin-bottom: 20px;
+  font-size: 30px;
+  color: #111;
+  border-bottom: 4px solid #555;
+  padding: 5px 0px;
+  display: inline-block;
+}
+
+.screen .form-input label {
+  display: block;
+  margin-bottom:  5px;
+}
+
+.screen .form-input input{
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #555;
+  font-size: 16px;
+}
+
+.screen .form-input button{
+  padding: 10px 20px;
+  background: #111;
+  color: #eee;
+  font-size: 16px;
+  cursor: pointer;
+  outline: none;
+  border: none;
+}
+

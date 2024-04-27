@@ -1,10 +1,13 @@
-import logo from './logo.svg';
 import './App.css';
+import Home from './pages/Home';
+import JoinScreen from './pages/JoinScreen';
 
 function App() {
   return (
-    <div className="App">
-      Edin Ganic ovdje
+    <div className='body'>
+      <div className="App">
+          <Home />
+      </div>
     </div>
   );
 }
