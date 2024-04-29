@@ -2,22 +2,23 @@ import React, { useEffect, useState, useRef } from 'react';
 import profilePic from '../images/user_image.png';
 import styled, { keyframes } from 'styled-components';
 import io from 'socket.io-client';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+
 
 function Home() {
   const [messages, setMessages] = useState([]);
   const [users, setUsers] = useState([]);
-  const [user, setUser] = useState('');
+  //const [user, setUser] = useState('');
   const [inputMessage, setInputMessage] = useState('');
   const messagesEndRef = useRef(null);
   const socket = io("http://localhost:3001/");
   const { state } = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     socket.emit('user', state.username);
-
-    socket.on('users', (user) => {
-      setUsers(user);
+    socket.on('users', (OnlineUsers) => {
+      setUsers(OnlineUsers);
     });
     socket.on('allMessages', (message) => {
       setMessages((prevMessages) => prevMessages.concat(message));
@@ -44,10 +45,6 @@ function Home() {
     }
   };
 
-  const exitChat = () => {
-    socket.disconnect();
-  };
-
   return (
     <Main className='main-screen'>
       <Users className='online-users'>
@@ -62,14 +59,21 @@ function Home() {
       <ChatScreen className='screen chat-screen'>
         <Header className='header'>
           <Logo>Chat</Logo>
-          <Button id="exit-chat" onClick={exitChat}>Exit</Button>
         </Header>
         <MessagesContainer className='messages'>
           {messages.map((mess, key) => (
-            <Message className='message my-message' key={key}>
-              <MessageTexts className='name'>{mess.username}</MessageTexts>
-              <MessageTexts className='text'>{mess.message}</MessageTexts>
+            mess.status && mess.status === "joined" ?
+            <Update>
+              {mess.message}
+            </Update>
+            :
+            <Message className= 'message my-message' key={key}>
+              <MessageUsername className='name'>{mess.username}</MessageUsername>
+              <MessageContent className='text'>
+                <MessageTexts>{mess.message}</MessageTexts>
+              </MessageContent>
             </Message>
+            
           ))}
           <div ref={messagesEndRef} />
         </MessagesContainer>
@@ -167,6 +171,7 @@ const Button = styled.button`
   font-size: 15px;
   cursor: pointer;
   outline: none;
+  color: red;
 `;
 
 const MessagesContainer = styled.div`
@@ -175,19 +180,36 @@ const MessagesContainer = styled.div`
   background: #f5f5f5;
   overflow: auto;
   padding: 10px;
+
 `;
 
 const Message = styled.div`
   display: flex;
+  flex-direction:column;
   animation: ${fadeIn} 0.3s ease;
   padding: 10px;
+  max-width: 200px;
 `;
 
-const MessageTexts = styled.p`
-  max-width: 80%;
+
+const MessageContent = styled.p`
   background: #fff;
   box-shadow: 0px 0px 20px 5px rgba(0,0,0,0.05);
   padding: 10px;
+  border-radius: 10px;
+`;
+
+const MessageTexts = styled.p`
+  padding: 10px;
+  font-size: 15px;
+  overflow-wrap: break-word;
+
+`;
+const MessageUsername = styled.p`
+  color: green;
+  font-size: 10px;
+  padding: 5px 5px;
+  overflow-wrap: break-word;
 `;
 
 const Update = styled.div`

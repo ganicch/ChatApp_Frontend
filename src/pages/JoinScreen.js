@@ -2,21 +2,22 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
+import io from 'socket.io-client';
+
 
 function JoinScreen() {
+
+    const socket = io("http://localhost:3001/");
     const navigate = useNavigate();
     const JoinChat = () => {
         const username = `User_${uuidv4().split('-')[0]}`
+        socket.emit('join', username);
         navigate(`/home`,{state: {username}})
     }
 
     return (
         <Form className='form'>
             <H2>Join Chat</H2>
-            <FormInput className='form-input'>
-                <Label>Username </Label>
-                <Input type='text' id="username" />
-            </FormInput>
             <FormInput className='form-input'>
                 <Button id="join-user" onClick={JoinChat}>Join</Button>
             </FormInput>
@@ -31,23 +32,14 @@ const Form = styled.div`
     transform: translate(-50%, -50%);
     width: 80%;
     max-width: 400px;
+    padding: 10px;
+    border-bottom: 3px solid #000;
+    border-top: 3px solid #000;
 `;
 
 const FormInput = styled.div`
     width: 100%;
     margin: 20px 0px;
-`;
-
-const Label = styled.label`
-    display: block;
-    margin-bottom: 5px;
-`;
-
-const Input = styled.input`
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #555;
-    font-size: 16px;
 `;
 
 const Button = styled.button`
@@ -61,7 +53,7 @@ const Button = styled.button`
 `;
 
 const H2 = styled.h2`
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     font-size: 30px;
     color: #111;
     border-bottom: 4px solid #555;
