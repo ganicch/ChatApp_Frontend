@@ -65,27 +65,8 @@
   border: none;
 }
 
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    Segoe UI,
-    Roboto,
-    Oxygen,
-    Ubuntu,
-    Cantarell,
-    Fira Sans,
-    Droid Sans,
-    Helvetica Neue,
-    sans-serif;
-}
 
-* {
-  box-sizing: border-box;
-}
+
 
 main {
   padding: 5rem 0;
@@ -110,11 +91,11 @@ code {
 
 input[type='button'] {
   border: none;
-  background: cornflowerblue;
+  background: green;
   color: white;
-  padding: 12px 24px;
+  padding: 10px 15px;
   margin: 8px;
-  font-size: 24px;
+  font-size: 15px;
   border-radius: 8px;
   cursor: pointer;
 }

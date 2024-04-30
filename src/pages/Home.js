@@ -3,12 +3,12 @@ import profilePic from '../images/user_image.png';
 import styled, { keyframes } from 'styled-components';
 import io from 'socket.io-client';
 import { useLocation, useNavigate } from 'react-router-dom';
+import DataAcess from '../apis/DataAcess';
 
 
 function Home() {
   const [messages, setMessages] = useState([]);
   const [users, setUsers] = useState([]);
-  //const [user, setUser] = useState('');
   const [inputMessage, setInputMessage] = useState('');
   const messagesEndRef = useRef(null);
   const socket = io("http://localhost:3001/");
@@ -16,6 +16,8 @@ function Home() {
   const navigate = useNavigate();
 
   useEffect(() => {
+
+    DataAcess.get('')
     socket.emit('user', state.username);
     socket.on('users', (OnlineUsers) => {
       setUsers(OnlineUsers);
@@ -92,7 +94,6 @@ function Home() {
   );
 }
 
-// Styled components
 
 const fadeIn = keyframes`
   from {

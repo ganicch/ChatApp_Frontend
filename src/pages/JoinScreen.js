@@ -1,3 +1,5 @@
+//Ova komponenta je bila prije registracije i prijavljivanja
+
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
